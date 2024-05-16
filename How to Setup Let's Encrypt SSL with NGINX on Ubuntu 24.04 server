@@ -1,0 +1,38 @@
+How to Setup Let's Encrypt SSL with NGINX server.
+1. Install NGINX: If you haven't already installed NGINX, you can do so using the package manager
+
+$sudo apt update
+$sudo apt install nginx
+
+2. Copy your default configuration to the domain configuration (change myapp.com to your domain name)
+
+$cp /etc/nginx/sites-available/default /etc/nginx/sites-available/myapp.com
+
+3. Setup ssl for your domain by editing the domain configuration file, look for server_name _; 
+and add your domain name in front of server_name _;
+
+$nano /etc/nginx/sites-available/myapp.com
+server_name myapp.com www.myapp.com; and save the configuration file
+
+4. Unlink your default configuration file so that you can enable your domain configuration file
+
+unlink /etc/nginx/sites-enabled/default
+
+5. Link your domain ( This automatically enable your domain configuration file)
+ln -s /etc/nginx/sites-available/myapp.com /etc/nginx/sites-enabled/myapp.com 
+
+
+6. After enable the domain you can then test
+$nginx -t
+
+$service nginx restart
+
+7. Install Certbot for Let's encrypt SSL
+$sudo apt-add-repository -r ppa:certbot/certbot  
+(Press Enter)
+
+$sudo apt install -y certbot python3-certbot-nginx
+
+$certbot --nginx -d myapp.com -d myapp.com
+
+
